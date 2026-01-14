@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบสอบถาม AI Training - SCG Cement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #C8102E;
+            --dark-red: #A00D24;
+            --dark-gray: #2D2D2D;
+            --medium-gray: #5A5A5A;
+            --light-gray: #E8E8E8;
+            --white: #FFFFFF;
+            --bg-gray: #F5F5F5;
+            --success-green: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: var(--bg-gray);
+            color: var(--dark-gray);
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* Compact Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Team Selection */
+        .team-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .team-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .team-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .team-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .team-card.selected {
+            border-color: var(--primary-red);
+            background: #FFF5F6;
+        }
+
+        .team-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .team-card h3 {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .team-card p {
+            color: var(--medium-gray);
+            font-size: 0.8rem;
+        }
+
+        .team-other-input {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .team-other-input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .team-card.selected .team-other-input {
+            display: block;
+        }
+
+        /* Survey Container */
+        .survey-container {
+            display: none;
+        }
+
+        .survey-container.active {
+            display: block;
+        }
+
+        /* Section - Compact */
+        .section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .section-letter {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-red);
+            color: var(--white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .section-subtitle {
+            font-size: 0.75rem;
+            color: var(--primary-red);
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Question - Compact */
+        .question {
+            margin-bottom: 15px;
+        }
+
+        .question:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-label {
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .question-sublabel {
+            font-size: 0.75rem;
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+        }
+
+        /* Input Styles - Compact */
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        /* Dotted input */
+        .dotted-input {
+            border: none;
+            border-bottom: 2px dotted var(--light-gray);
+            border-radius: 0;
+            padding: 8px 5px;
+            background: transparent;
+        }
+
+        .dotted-input::placeholder {
+            color: #ccc;
+            font-style: italic;
+        }
+
+        .dotted-input:focus {
+            border-bottom-color: var(--primary-red);
+            box-shadow: none;
+        }
+
+        /* Compact Radio/Checkbox */
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: var(--light-gray);
+        }
+
+        .option.selected {
+            background: #FFF5F6;
+            border-color: var(--primary-red);
+        }
+
+        .option .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .option.checkbox .checkmark {
+            border-radius: 4px;
+        }
+
+        .option.selected .checkmark {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+        }
+
+        .option.selected .checkmark::after {
+            content: "✓";
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .option-title {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        /* Other input in checkbox */
+        .option.has-input {
+            flex-wrap: wrap;
+        }
+
+        .option.has-input .other-input {
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px;
+            border: 1px dashed var(--light-gray);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .option.has-input.selected .other-input {
+            display: block;
+        }
+
+        /* Level Cards - Compact */
+        .level-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .level-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .level-option:hover {
+            background: var(--light-gray);
+        }
+
+        .level-option.selected {
+            background: #FFF5F6;
+            border-color: var(--primary-red);
+        }
+
+        .level-badge {
+            width: 36px;
+            height: 36px;
+            background: var(--medium-gray);
+            color: var(--white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 10px;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .level-option.selected .level-badge {
+            background: var(--primary-red);
+        }
+
+        .level-option .option-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .level-option .option-title {
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .level-option .option-desc {
+            font-size: 0.7rem;
+            color: var(--medium-gray);
+        }
+
+        /* Tool Grid - Compact */
+        .tool-section {
+            margin-bottom: 12px;
+        }
+
+        .tool-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .category-label {
+            font-size: 0.75rem;
+            color: var(--medium-gray);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .tool-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tool-option {
+            padding: 8px 12px;
+            background: var(--bg-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            font-size: 0.8rem;
+        }
+
+        .tool-option:hover {
+            background: var(--light-gray);
+        }
+
+        .tool-option.selected {
+            background: #FFF5F6;
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+            font-weight: 500;
+        }
+
+        .tool-option.other-tool {
+            border-style: dashed;
+            border-color: var(--light-gray);
+        }
+
+        .tool-option.other-tool.selected {
+            border-style: solid;
+        }
+
+        .other-tool-input {
+            display: none;
+            margin-top: 8px;
+            padding: 8px 12px;
+            border: 1px dashed var(--light-gray);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .other-tool-input.show {
+            display: block;
+        }
+
+        /* Frequency Options - Compact */
+        .freq-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .freq-option {
+            padding: 8px 14px;
+            background: var(--bg-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            font-size: 0.8rem;
+        }
+
+        .freq-option:hover {
+            background: var(--light-gray);
+        }
+
+        .freq-option.selected {
+            background: #FFF5F6;
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+            font-weight: 500;
+        }
+
+        /* Satisfaction Grid - Compact */
+        .satisfaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .satisfaction-table th {
+            padding: 8px 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--medium-gray);
+            text-align: center;
+        }
+
+        .satisfaction-table td {
+            padding: 8px 4px;
+            text-align: center;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .satisfaction-table td:first-child {
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        .satisfaction-btn {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--light-gray);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .satisfaction-btn:hover {
+            border-color: var(--primary-red);
+        }
+
+        .satisfaction-btn.selected {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+        }
+
+        /* ==================== */
+        /* SECTION C - 6 CELLS PER ROW */
+        /* ==================== */
+        
+        .work-grid-container {
+            margin-top: 10px;
+        }
+
+        .work-category {
+            margin-bottom: 8px;
+        }
+
+        /* Category title - just underline, no background */
+        .work-category-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid var(--primary-red);
+            display: inline-block;
+        }
+
+        /* Grid Layout - 6 columns */
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+        }
+
+        .work-cell {
+            background: var(--bg-gray);
+            border-radius: 6px;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .work-cell:hover {
+            background: var(--light-gray);
+        }
+
+        .work-cell.active {
+            border-color: var(--primary-red);
+            background: #FFF5F6;
+        }
+
+        .work-cell.has-value {
+            background: #E8F5E9;
+        }
+
+        .work-cell.has-value.active {
+            background: #FFF5F6;
+        }
+
+        .work-cell-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+            line-height: 1.25;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .work-cell-percent {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--medium-gray);
+            margin-top: 4px;
+        }
+
+        .work-cell.has-value .work-cell-percent {
+            color: var(--success-green);
+        }
+
+        .work-cell.active .work-cell-percent {
+            color: var(--primary-red);
+        }
+
+        /* Other cell - editable */
+        .work-cell.other-cell {
+            position: relative;
+        }
+
+        .work-cell.other-cell .other-text-input {
+            display: none;
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 0.7rem;
+            text-align: center;
+            font-family: inherit;
+            padding: 2px;
+            outline: none;
+        }
+
+        .work-cell.other-cell.editing .work-cell-label {
+            display: none;
+        }
+
+        .work-cell.other-cell.editing .other-text-input {
+            display: block;
+        }
+
+        /* Total Bar - Sticky at bottom */
+        .total-bar {
+            position: sticky;
+            bottom: 0;
+            background: var(--dark-gray);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+        }
+
+        .total-bar.complete {
+            background: var(--success-green);
+        }
+
+        .total-bar.over {
+            background: var(--primary-red);
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .total-item {
+            text-align: center;
+        }
+
+        .total-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .total-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .remaining-value.warning {
+            color: #FFD700;
+        }
+
+        /* Control buttons in center */
+        .control-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .ctrl-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Rating Scale - Compact */
+        .rating-grid {
+            display: grid;
+            gap: 6px;
+        }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            gap: 10px;
+        }
+
+        .rating-label {
+            flex: 1;
+            font-size: 0.8rem;
+            min-width: 0;
+        }
+
+        .rating-buttons {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .rating-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--light-gray);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .rating-btn:hover {
+            border-color: var(--primary-red);
+        }
+
+        .rating-btn.selected {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            color: var(--white);
+        }
+
+        /* Dynamic Input - Compact */
+        .dynamic-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dynamic-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dynamic-input-row input {
+            flex: 1;
+        }
+
+        .add-btn, .remove-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .add-btn {
+            background: var(--primary-red);
+            color: var(--white);
+        }
+
+        .add-btn:hover {
+            background: var(--dark-red);
+        }
+
+        .remove-btn {
+            background: var(--light-gray);
+            color: var(--medium-gray);
+        }
+
+        .remove-btn:hover {
+            background: var(--primary-red);
+            color: var(--white);
+        }
+
+        /* Checkbox Grid - Compact */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .checkbox-grid .option {
+            padding: 8px 10px;
+        }
+
+        .checkbox-grid .option-title {
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        /* Progress */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--light-gray);
+            z-index: 100;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-red);
+            transition: width 0.3s ease;
+        }
+
+        /* Navigation - Compact */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-btn.prev {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .nav-btn.prev:hover {
+            background: var(--medium-gray);
+            color: var(--white);
+        }
+
+        .nav-btn.next {
+            background: var(--primary-red);
+            color: var(--white);
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .nav-btn.next:hover {
+            background: var(--dark-red);
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: var(--primary-red);
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: var(--primary-red);
+        }
+
+        /* Success Page */
+        .success-page {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            color: var(--white);
+        }
+
+        .success-page h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--dark-gray);
+        }
+
+        .success-page p {
+            color: var(--medium-gray);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: var(--medium-gray);
+            font-size: 0.75rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .work-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .team-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .work-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .level-options {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rating-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .rating-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .total-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>แบบสอบถาม AI Training</h1>
+            <p>SCG Cement and Green Solutions • ⏱️ 10-15 นาที</p>
+        </div>
+
+        <!-- Team Selection -->
+        <div id="teamSelection">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-letter">👥</div>
+                    <div class="section-title">เลือกทีมของคุณ</div>
+                </div>
+                <div class="team-selection">
+                    <div class="team-card" onclick="selectTeam('transformers')">
+                        <div class="icon">🏭</div>
+                        <h3>Transformers</h3>
+                        <p>ปูนผง / Endorsed Plant</p>
+                    </div>
+                    <div class="team-card" onclick="selectTeam('green')">
+                        <div class="icon">🌿</div>
+                        <h3>Green Circularity</h3>
+                        <p>SCG Circular / Green Solutions</p>
+                    </div>
+                    <div class="team-card" onclick="selectTeamOther(this)">
+                        <div class="icon">🔷</div>
+                        <h3>อื่นๆ</h3>
+                        <p>ทีมอื่นๆ ที่ไม่ได้ระบุ</p>
+                        <input type="text" id="teamOtherInput" class="team-other-input" placeholder="กรอกชื่อทีม..." onclick="event.stopPropagation()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survey Container -->
+        <div class="survey-container" id="surveyContainer">
+            <div class="step-indicator" id="stepIndicator"></div>
+
+            <!-- Step 1: General Info -->
+            <div class="step" data-step="1">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-letter">A</div>
+                        <div class="section-title">ข้อมูลทั่วไป</div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">A1. ชื่อ-นามสกุล</label>
+                        <input type="text" id="name" placeholder="กรอกชื่อ-นามสกุล">
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">A2. ตำแหน่งงาน</label>
+                        <input type="text" id="position" placeholder="กรอกตำแหน่งงาน">
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">A3. แผนก/ทีม</label>
+                        <div class="option-group">
+                            <label class="option" onclick="selectOption(this, 'team')">
+                                <input type="radio" name="team" value="transformers" style="display:none;">
+                                <span class="checkmark"></span>
+                                <span class="option-title">Transformers (ปูนผง / Endorsed Plant)</span>
+                            </label>
+                            <label class="option" onclick="selectOption(this, 'team')">
+                                <input type="radio" name="team" value="green" style="display:none;">
+                                <span class="checkmark"></span>
+                                <span class="option-title">Green Circularity (SCG Circular / Green Solutions)</span>
+                            </label>
+                            <label class="option has-input" onclick="selectOption(this, 'team')" id="teamOtherOption">
+                                <input type="radio" name="team" value="other" style="display:none;">
+                                <span class="checkmark"></span>
+                                <span class="option-title">อื่นๆ</span>
+                                <input type="text" class="other-input" id="teamOtherNameInput" placeholder="ระบุชื่อทีม..." onclick="event.stopPropagation()">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">A4. หน่วยงาน/ภาค</label>
+                        <input type="text" id="department" placeholder="กรอกหน่วยงาน/ภาค">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: AI Readiness -->
+            <div class="step" data-step="2" style="display:none;">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-letter">B</div>
+                        <div class="section-title">ระดับความพร้อม AI</div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">B1. ระดับประสบการณ์ AI ของท่าน</label>
+                        <div class="level-options">
+                            <div class="level-option" onclick="selectLevel(this, 0)">
+                                <div class="level-badge">L0</div>
+                                <div class="option-content">
+                                    <div class="option-title">ยังไม่เคยใช้ AI เลย</div>
+                                </div>
+                            </div>
+                            <div class="level-option" onclick="selectLevel(this, 1)">
+                                <div class="level-badge">L1</div>
+                                <div class="option-content">
+                                    <div class="option-title">เคยลองใช้แต่ยังไม่คล่อง</div>
+                                </div>
+                            </div>
+                            <div class="level-option" onclick="selectLevel(this, 2)">
+                                <div class="level-badge">L2</div>
+                                <div class="option-content">
+                                    <div class="option-title">ใช้ถาม-ตอบทั่วไปได้</div>
+                                    <div class="option-desc">ค้นหาข้อมูล, แปลภาษา</div>
+                                </div>
+                            </div>
+                            <div class="level-option" onclick="selectLevel(this, 3)">
+                                <div class="level-badge">L3</div>
+                                <div class="option-content">
+                                    <div class="option-title">ใช้ช่วยงานเฉพาะทางได้</div>
+                                    <div class="option-desc">ร่างอีเมล, สรุปเอกสาร</div>
+                                </div>
+                            </div>
+                            <div class="level-option" onclick="selectLevel(this, 4)">
+                                <div class="level-badge">L4</div>
+                                <div class="option-content">
+                                    <div class="option-title">ใช้ AI ขั้นสูง</div>
+                                    <div class="option-desc">เขียน Prompt ได้ดี</div>
+                                </div>
+                            </div>
+                            <div class="level-option" onclick="selectLevel(this, 5)">
+                                <div class="level-badge">L5</div>
+                                <div class="option-content">
+                                    <div class="option-title">ผู้เชี่ยวชาญ</div>
+                                    <div class="option-desc">สอนคนอื่นได้</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">B2. เครื่องมือ AI ที่เคยใช้ (เลือกได้หลายข้อ)</label>
+
+                        <div class="tool-section">
+                            <div class="category-label">Generative AI ทั่วไป</div>
+                            <div class="tool-grid">
+                                <div class="tool-option" onclick="toggleTool(this)">ChatGPT</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Claude</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Gemini</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Copilot</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Perplexity</div>
+                                <div class="tool-option other-tool" onclick="toggleOtherTool(this, 'genai')">อื่นๆ...</div>
+                            </div>
+                            <input type="text" class="other-tool-input" id="genai-other" placeholder="ระบุ AI อื่นๆ ที่ใช้...">
+                        </div>
+
+                        <div class="tool-section">
+                            <div class="category-label">Microsoft 365 Copilot</div>
+                            <div class="tool-grid">
+                                <div class="tool-option" onclick="toggleTool(this)" data-copilot="word">Word</div>
+                                <div class="tool-option" onclick="toggleTool(this)" data-copilot="excel">Excel</div>
+                                <div class="tool-option" onclick="toggleTool(this)" data-copilot="ppt">PowerPoint</div>
+                                <div class="tool-option" onclick="toggleTool(this)" data-copilot="teams">Teams</div>
+                                <div class="tool-option" onclick="toggleTool(this)" data-copilot="outlook">Outlook</div>
+                                <div class="tool-option other-tool" onclick="toggleOtherTool(this, 'm365')">อื่นๆ...</div>
+                            </div>
+                            <input type="text" class="other-tool-input" id="m365-other" placeholder="ระบุ M365 Copilot อื่นๆ...">
+                        </div>
+
+                        <div class="tool-section">
+                            <div class="category-label">AI เฉพาะทาง</div>
+                            <div class="tool-grid">
+                                <div class="tool-option" onclick="toggleTool(this)">Midjourney</div>
+                                <div class="tool-option" onclick="toggleTool(this)">DALL-E</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Canva AI</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Notion AI</div>
+                                <div class="tool-option" onclick="toggleTool(this)">Gamma</div>
+                                <div class="tool-option other-tool" onclick="toggleOtherTool(this, 'specialized')">อื่นๆ...</div>
+                                <div class="tool-option" onclick="toggleTool(this)">ไม่เคยใช้เลย</div>
+                            </div>
+                            <input type="text" class="other-tool-input" id="specialized-other" placeholder="ระบุ AI เฉพาะทางอื่นๆ...">
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">B3. ความถี่ในการใช้ AI</label>
+                        <div class="freq-options">
+                            <div class="freq-option" onclick="selectFreq(this)">ทุกวัน</div>
+                            <div class="freq-option" onclick="selectFreq(this)">2-3 ครั้ง/สัปดาห์</div>
+                            <div class="freq-option" onclick="selectFreq(this)">สัปดาห์ละครั้ง</div>
+                            <div class="freq-option" onclick="selectFreq(this)">เดือนละครั้ง</div>
+                            <div class="freq-option" onclick="selectFreq(this)">ไม่เคยใช้</div>
+                        </div>
+                    </div>
+
+                    <div class="question" id="copilotSatisfaction" style="display:none;">
+                        <label class="question-label">B4. ความพึงพอใจ M365 Copilot</label>
+                        <table class="satisfaction-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left;">เครื่องมือ</th>
+                                    <th>ไม่เคย</th>
+                                    <th>ไม่เวิร์ก</th>
+                                    <th>พอใช้</th>
+                                    <th>ดี</th>
+                                    <th>ดีมาก</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-tool="word">
+                                    <td>Word</td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 0)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 1)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 2)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 3)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 4)"></button></td>
+                                </tr>
+                                <tr data-tool="excel">
+                                    <td>Excel</td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 0)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 1)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 2)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 3)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 4)"></button></td>
+                                </tr>
+                                <tr data-tool="ppt">
+                                    <td>PowerPoint</td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 0)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 1)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 2)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 3)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 4)"></button></td>
+                                </tr>
+                                <tr data-tool="teams">
+                                    <td>Teams</td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 0)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 1)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 2)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 3)"></button></td>
+                                    <td><button class="satisfaction-btn" onclick="selectSatisfaction(this, 4)"></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Daily Work - 6 CELLS PER ROW -->
+            <div class="step" data-step="3" style="display:none;">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-letter">C</div>
+                        <div class="section-title">ภาระงานประจำวัน</div>
+                        <div class="section-subtitle">⚠️ รวมต้องครบ 100%</div>
+                    </div>
+
+                    <div class="work-grid-container">
+                        <!-- Transformers Work -->
+                        <div id="transformersWork" style="display:none;">
+                            <div class="work-category">
+                                <div class="work-category-title">📊 งานขายและลูกค้า</div>
+                                <div class="work-grid">
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">เยี่ยมลูกค้า/แพลนท์</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ใบเสนอราคา/Shift-2</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">คำนวณราคา/ค่าขนส่ง</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">เจรจา/ปิดการขาย</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ติดตามลูกหนี้</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Cross-sell HVA</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="work-category">
+                                <div class="work-category-title">🚚 ติดตาม/ประสานงาน</div>
+                                <div class="work-grid">
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">เช็คสถานะจัดส่ง</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ประสาน SCG JWD</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">แก้ปัญหาส่งล่าช้า</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ตอบสถานะรถ</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">แก้ปัญหา/Claim</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">บันทึก VOC/CRM</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="work-category">
+                                <div class="work-category-title">📝 เอกสาร/รายงาน/วิเคราะห์</div>
+                                <div class="work-grid">
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">รายงานยอดขาย</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">กรอก SAP/Shift-2</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ทำ Presentation</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ประชุมทีม</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">อีเมล/สรุปประชุม</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">วิเคราะห์ Market</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">เก็บข้อมูลคู่แข่ง</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ศึกษาสินค้า</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell other-cell" onclick="selectOtherCell(this)">
+                                        <div class="work-cell-label">อื่นๆ (คลิกพิมพ์)</div>
+                                        <input type="text" class="other-text-input" placeholder="ระบุ...">
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Green Circularity Work -->
+                        <div id="greenWork" style="display:none;">
+                            <div class="work-category">
+                                <div class="work-category-title">🤝 BD และ Partnership</div>
+                                <div class="work-grid">
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Feasibility Study</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">เจรจาหุ้นส่วน/คู่ค้า</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Business Case/Proposal</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">วิเคราะห์ต้นทุน RDF/รีไซเคิล</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">โมเดล Circular</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ติดตามโครงการ</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="work-category">
+                                <div class="work-category-title">📊 ขาย/R&D/เทคนิค</div>
+                                <div class="work-grid">
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">เยี่ยมลูกค้า/นำเสนอ</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Proposal/Concept</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Pipeline/TOR</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Trial ผลิตภัณฑ์</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">LCA/Carbon</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Spec/คู่มือ/เทคนิค</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="work-category">
+                                <div class="work-category-title">📝 เอกสาร/Marketing/อื่นๆ</div>
+                                <div class="work-grid">
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Presentation/Deck</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">ประชุมทีม</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">รายงาน/อีเมล</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Campaign/Content</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell" onclick="selectWorkCell(this)">
+                                        <div class="work-cell-label">Best Practice/Tech</div>
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                    <div class="work-cell other-cell" onclick="selectOtherCell(this)">
+                                        <div class="work-cell-label">อื่นๆ (คลิกพิมพ์)</div>
+                                        <input type="text" class="other-text-input" placeholder="ระบุ...">
+                                        <div class="work-cell-percent">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Bar with controls in center -->
+                    <div class="total-bar" id="totalBar">
+                        <div class="total-item">
+                            <div class="total-label">รวม</div>
+                            <div class="total-value" id="totalValue">0%</div>
+                        </div>
+                        <div class="control-btns">
+                            <button class="ctrl-btn" onclick="quickAdjust(-10)">-10</button>
+                            <button class="ctrl-btn" onclick="quickAdjust(-5)">-5</button>
+                            <button class="ctrl-btn" onclick="quickClear()">0</button>
+                            <button class="ctrl-btn" onclick="quickAdjust(5)">+5</button>
+                            <button class="ctrl-btn" onclick="quickAdjust(10)">+10</button>
+                        </div>
+                        <div class="total-item">
+                            <div class="total-label">เหลือ</div>
+                            <div class="total-value remaining-value" id="remainingValue">100%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Problems & Challenges -->
+            <div class="step" data-step="4" style="display:none;">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-letter">D</div>
+                        <div class="section-title">ปัญหาและความท้าทาย</div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">D1. ปัญหาที่พบบ่อย (เลือกได้หลายข้อ)</label>
+
+                        <div id="transformersProblems" style="display:none;">
+                            <div class="checkbox-grid">
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ติดตามรถขนส่งลำบาก</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ทำราคา/คำนวณค่าขนส่งช้า</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ข้อมูลลูกค้ากระจัดกระจาย</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ขาดข้อมูล Cross-selling HVA</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ไม่มีระบบเตือน Market Share</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">บันทึกข้อมูลหลังเยี่ยมลำบาก</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">อนุมัติราคาพิเศษล่าช้า</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">เก็บข้อมูลคู่แข่งไม่ทัน</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ใช้เวลากับเอกสารมากไป</span>
+                                </label>
+                                <label class="option checkbox has-input" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">อื่นๆ...</span>
+                                    <input type="text" class="other-input" placeholder="ระบุ..." onclick="event.stopPropagation()">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="greenProblems" style="display:none;">
+                            <div class="checkbox-grid">
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">Feasibility ใช้เวลานาน</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ข้อมูล Circular หาได้ยาก</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">Business Case ซับซ้อน</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">LCA ต้องการเครื่องมือช่วย</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">สื่อสาร Sustainability ยาก</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">Best Practice กระจัดกระจาย</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">Presentation ใช้เวลามาก</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">สรุปประชุม/Action Item ไม่ทัน</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">ติดตามหลายโปรเจกต์ลำบาก</span>
+                                </label>
+                                <label class="option checkbox has-input" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">อื่นๆ...</span>
+                                    <input type="text" class="other-input" placeholder="ระบุ..." onclick="event.stopPropagation()">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">D2. ถ้า AI ช่วยได้ อยากให้ช่วยเรื่องอะไร? (3-5 ข้อ)</label>
+                        <div class="dynamic-inputs" id="aiHelpInputs">
+                            <div class="dynamic-input-row">
+                                <input type="text" class="dotted-input" placeholder="1. .....................................................">
+                            </div>
+                            <div class="dynamic-input-row">
+                                <input type="text" class="dotted-input" placeholder="2. .....................................................">
+                            </div>
+                            <div class="dynamic-input-row">
+                                <input type="text" class="dotted-input" placeholder="3. .....................................................">
+                            </div>
+                        </div>
+                        <button class="add-btn" onclick="addInput('aiHelpInputs', 5)" style="margin-top:10px;">+</button>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">D3. ฟีเจอร์ AI ที่สนใจ (เลือกได้หลายข้อ)</label>
+
+                        <div id="transformersFeatures" style="display:none;">
+                            <div class="checkbox-grid">
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI เช็คสถานะรถผ่าน LINE</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI คำนวณราคา/ค่าขนส่ง</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI ส่งคำขออนุมัติราคา</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">Voice to CRM</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI แยก Note/Task จากเสียง</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI เตือนยอดขาย/Share ตก</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI แนะนำ Cross-selling</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI แนะนำลูกค้าที่ควรโทร</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI สร้างใบเสนอราคา PDF</span>
+                                </label>
+                                <label class="option checkbox has-input" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">อื่นๆ...</span>
+                                    <input type="text" class="other-input" placeholder="ระบุ..." onclick="event.stopPropagation()">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="greenFeatures" style="display:none;">
+                            <div class="checkbox-grid">
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI Feasibility Analysis</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI สรุปข้อมูล Circular</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI ร่าง Business Case</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI วิเคราะห์ LCA/Carbon</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI สร้าง Content Sustainability</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI สรุปประชุม/Action Item</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI ทำ Presentation</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI แปลง Technical Content</span>
+                                </label>
+                                <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">AI วิเคราะห์ Excel/Dashboard</span>
+                                </label>
+                                <label class="option checkbox has-input" onclick="toggleCheckbox(this)">
+                                    <span class="checkmark"></span>
+                                    <span class="option-title">อื่นๆ...</span>
+                                    <input type="text" class="other-input" placeholder="ระบุ..." onclick="event.stopPropagation()">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Expectations -->
+            <div class="step" data-step="5" style="display:none;">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-letter">E</div>
+                        <div class="section-title">ความคาดหวังจากการอบรม</div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">E1. ความสำคัญที่คาดหวัง (1=น้อย, 5=มาก)</label>
+                        <div class="rating-grid">
+                            <div class="rating-row">
+                                <span class="rating-label">ลดเวลางานซ้ำๆ/เอกสาร</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row" id="expectation2">
+                                <span class="rating-label rating-dynamic">เพิ่มประสิทธิภาพการขาย</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row" id="expectation3">
+                                <span class="rating-label rating-dynamic">เข้าถึงข้อมูลได้เร็วขึ้น</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-label">ทำงานกับทีมได้ดีขึ้น</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-label">ใช้กับงานจริงได้ทันที</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-label">เรียนรู้เทคโนโลยีใหม่</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-label">เตรียมพร้อมสำหรับอนาคต</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-label">สร้างนวัตกรรม/ไอเดียใหม่</span>
+                                <div class="rating-buttons">
+                                    <button class="rating-btn" onclick="selectRating(this)">1</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">2</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">3</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">4</button>
+                                    <button class="rating-btn" onclick="selectRating(this)">5</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">E2. หัวข้อที่สนใจเรียน (เลือกได้หลายข้อ)</label>
+                        <div class="checkbox-grid">
+                            <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                <span class="checkmark"></span>
+                                <span class="option-title">พื้นฐาน AI & Prompt</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)" id="topic2">
+                                <span class="checkmark"></span>
+                                <span class="option-title topic-dynamic">AI งานขาย/Pipeline</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                <span class="checkmark"></span>
+                                <span class="option-title">AI งานเอกสาร</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                <span class="checkmark"></span>
+                                <span class="option-title">M365 Copilot</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)" id="topic5">
+                                <span class="checkmark"></span>
+                                <span class="option-title topic-dynamic">AI วิเคราะห์ข้อมูล</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                <span class="checkmark"></span>
+                                <span class="option-title">AI Presentation</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)" id="topic7">
+                                <span class="checkmark"></span>
+                                <span class="option-title topic-dynamic">AI สร้างภาพ/สื่อ</span>
+                            </label>
+                            <label class="option checkbox" onclick="toggleCheckbox(this)">
+                                <span class="checkmark"></span>
+                                <span class="option-title">AI Chatbot/Automation</span>
+                            </label>
+                            <label class="option checkbox has-input" onclick="toggleCheckbox(this)">
+                                <span class="checkmark"></span>
+                                <span class="option-title">อื่นๆ...</span>
+                                <input type="text" class="other-input" placeholder="ระบุ..." onclick="event.stopPropagation()">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Suggestions -->
+            <div class="step" data-step="6" style="display:none;">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-letter">F</div>
+                        <div class="section-title">ข้อเสนอแนะ</div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">F1. ไอเดีย/โปรเจกต์ AI ที่อยากทำ (ถ้ามี)</label>
+                        <textarea id="aiIdea" placeholder="บอกเล่าไอเดีย..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">F2. ข้อความถึงวิทยากร / สิ่งที่อยากให้เน้น</label>
+                        <textarea id="trainerMessage" placeholder="ข้อความหรือคำขอพิเศษ..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Page -->
+            <div class="step" data-step="7" style="display:none;">
+                <div class="section success-page">
+                    <div class="success-icon">✓</div>
+                    <h2>ขอบคุณที่สละเวลา</h2>
+                    <p>ข้อมูลจะถูกนำไปออกแบบหลักสูตรให้ตรงกับความต้องการจริง</p>
+                    <button class="nav-btn next" onclick="resetSurvey()">เริ่มใหม่</button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="nav-buttons" id="navButtons">
+                <button class="nav-btn prev" onclick="prevStep()" id="prevBtn" style="visibility:hidden;">← ย้อนกลับ</button>
+                <button class="nav-btn next" onclick="nextStep()" id="nextBtn">ถัดไป →</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <strong>Innovate AI Co., Ltd.</strong> x <strong>SCG Cement</strong> | Connected to Google Sheets
+        </div>
+    </div>
+
+    <script>
+        // ===== GOOGLE SHEETS CONFIG =====
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOkXwdx29eWfa48kA08DXDd8vxzMT7WIhvY95skAMCHZwNnVQiHTfanN6sVxMf4bcCcQ/exec';
+        
+        let selectedTeam = null;
+        let teamOtherName = '';
+        let currentStep = 1;
+        const totalSteps = 6;
+        let activeWorkCell = null;
+        let workValues = {};
+
+        // Team Selection - สำหรับ Transformers และ Green
+        function selectTeam(team) {
+            selectedTeam = team;
+            teamOtherName = '';
+            document.querySelectorAll('.team-card').forEach(card => card.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            // Clear other team input
+            const otherInput = document.getElementById('teamOtherInput');
+            if (otherInput) otherInput.value = '';
+
+            setTimeout(() => {
+                document.getElementById('teamSelection').style.display = 'none';
+                document.getElementById('surveyContainer').classList.add('active');
+                
+                const teamRadio = document.querySelector(`input[name="team"][value="${team}"]`);
+                if (teamRadio) {
+                    teamRadio.checked = true;
+                    teamRadio.closest('.option').classList.add('selected');
+                }
+                
+                // Hide other team input in A3
+                const teamOtherOption = document.getElementById('teamOtherOption');
+                if (teamOtherOption) {
+                    teamOtherOption.classList.remove('selected');
+                    const nameInput = document.getElementById('teamOtherNameInput');
+                    if (nameInput) nameInput.value = '';
+                }
+
+                updateTeamSpecificContent(team);
+                updateStepIndicator();
+                updateProgress();
+            }, 300);
+        }
+
+        // Team Selection - สำหรับทีมอื่นๆ
+        function selectTeamOther(cardElement) {
+            const otherInput = document.getElementById('teamOtherInput');
+            
+            // ถ้ายังไม่ได้ select ให้ select ก่อน
+            if (!cardElement.classList.contains('selected')) {
+                document.querySelectorAll('.team-card').forEach(card => card.classList.remove('selected'));
+                cardElement.classList.add('selected');
+                
+                setTimeout(() => {
+                    otherInput.focus();
+                }, 100);
+                return;
+            }
+            
+            // ถ้า select แล้ว ให้ตรวจสอบ input และไปต่อ
+            const otherName = otherInput.value.trim();
+            if (!otherName) {
+                alert('กรุณากรอกชื่อทีม');
+                otherInput.focus();
+                return;
+            }
+            
+            selectedTeam = 'other';
+            teamOtherName = otherName;
+            
+            setTimeout(() => {
+                document.getElementById('teamSelection').style.display = 'none';
+                document.getElementById('surveyContainer').classList.add('active');
+                
+                // Select "อื่นๆ" in A3 and fill name
+                const teamOtherOption = document.getElementById('teamOtherOption');
+                if (teamOtherOption) {
+                    document.querySelectorAll('.option-group .option').forEach(opt => opt.classList.remove('selected'));
+                    teamOtherOption.classList.add('selected');
+                    teamOtherOption.querySelector('input[type="radio"]').checked = true;
+                    const nameInput = document.getElementById('teamOtherNameInput');
+                    if (nameInput) nameInput.value = otherName;
+                }
+
+                updateTeamSpecificContent('other');
+                updateStepIndicator();
+                updateProgress();
+            }, 300);
+        }
+
+        function updateTeamSpecificContent(team) {
+            // สำหรับทีม other ให้แสดง content แบบ generic (ซ่อน team-specific content)
+            const isOther = (team === 'other');
+            
+            document.getElementById('transformersWork').style.display = team === 'transformers' ? 'block' : 'none';
+            document.getElementById('greenWork').style.display = team === 'green' ? 'block' : 'none';
+            document.getElementById('transformersProblems').style.display = team === 'transformers' ? 'block' : 'none';
+            document.getElementById('greenProblems').style.display = team === 'green' ? 'block' : 'none';
+            document.getElementById('transformersFeatures').style.display = team === 'transformers' ? 'block' : 'none';
+            document.getElementById('greenFeatures').style.display = team === 'green' ? 'block' : 'none';
+            
+            // สำหรับทีม other ให้แสดง transformers content เป็น default (หรือสร้าง generic content)
+            if (isOther) {
+                document.getElementById('transformersWork').style.display = 'block';
+                document.getElementById('transformersProblems').style.display = 'block';
+                document.getElementById('transformersFeatures').style.display = 'block';
+            }
+
+            if (team === 'green') {
+                document.querySelector('#expectation2 .rating-dynamic').textContent = 'เพิ่มคุณภาพงานวิเคราะห์';
+                document.querySelector('#expectation3 .rating-dynamic').textContent = 'เข้าถึง Best Practice เร็วขึ้น';
+                document.querySelector('#topic2 .topic-dynamic').textContent = 'AI งานวิเคราะห์/Research';
+                document.querySelector('#topic5 .topic-dynamic').textContent = 'AI Data Analysis';
+                document.querySelector('#topic7 .topic-dynamic').textContent = 'AI Content Sustainability';
+            } else {
+                // Reset to transformers/default text
+                document.querySelector('#expectation2 .rating-dynamic').textContent = 'เพิ่มประสิทธิภาพการขาย';
+                document.querySelector('#expectation3 .rating-dynamic').textContent = 'เข้าถึงข้อมูลได้เร็วขึ้น';
+                document.querySelector('#topic2 .topic-dynamic').textContent = 'AI งานขาย/Pipeline';
+                document.querySelector('#topic5 .topic-dynamic').textContent = 'AI วิเคราะห์ข้อมูล';
+                document.querySelector('#topic7 .topic-dynamic').textContent = 'AI สร้างภาพ/สื่อ';
+            }
+
+            workValues = {};
+            updateTotalDisplay();
+        }
+
+        // Step Navigation
+        function updateStepIndicator() {
+            const indicator = document.getElementById('stepIndicator');
+            indicator.innerHTML = '';
+            for (let i = 1; i <= totalSteps; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'step-dot';
+                if (i < currentStep) dot.classList.add('completed');
+                if (i === currentStep) dot.classList.add('active');
+                indicator.appendChild(dot);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentStep - 1) / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
+            document.querySelector(`.step[data-step="${step}"]`).style.display = 'block';
+            document.getElementById('prevBtn').style.visibility = step === 1 ? 'hidden' : 'visible';
+            
+            if (step === totalSteps) {
+                document.getElementById('nextBtn').textContent = 'ส่ง ✓';
+            } else if (step === totalSteps + 1) {
+                document.getElementById('navButtons').style.display = 'none';
+            } else {
+                document.getElementById('nextBtn').textContent = 'ถัดไป →';
+            }
+        }
+
+        function nextStep() {
+            if (currentStep === totalSteps) {
+                // ถึง step สุดท้าย - ส่งข้อมูล
+                submitSurvey();
+            } else if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+                updateStepIndicator();
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                updateStepIndicator();
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Option Selection
+        function selectOption(element, name) {
+            document.querySelectorAll(`[name="${name}"]`).forEach(input => {
+                input.closest('.option').classList.remove('selected');
+            });
+            element.classList.add('selected');
+            element.querySelector('input[type="radio"]').checked = true;
+            
+            // Handle team selection sync
+            if (name === 'team') {
+                const teamValue = element.querySelector('input[type="radio"]').value;
+                selectedTeam = teamValue;
+                
+                if (teamValue === 'other') {
+                    // Focus on other input
+                    setTimeout(() => {
+                        const nameInput = document.getElementById('teamOtherNameInput');
+                        if (nameInput) nameInput.focus();
+                    }, 100);
+                } else {
+                    // Clear other team name
+                    teamOtherName = '';
+                    const nameInput = document.getElementById('teamOtherNameInput');
+                    if (nameInput) nameInput.value = '';
+                }
+                
+                // Update team-specific content
+                updateTeamSpecificContent(teamValue);
+            }
+        }
+
+        function selectLevel(element, level) {
+            document.querySelectorAll('.level-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function toggleTool(element) {
+            element.classList.toggle('selected');
+            const copilotSelected = document.querySelectorAll('.tool-option[data-copilot].selected').length > 0;
+            document.getElementById('copilotSatisfaction').style.display = copilotSelected ? 'block' : 'none';
+        }
+
+        function toggleOtherTool(element, category) {
+            element.classList.toggle('selected');
+            const input = document.getElementById(category + '-other');
+            if (element.classList.contains('selected')) {
+                input.classList.add('show');
+                input.focus();
+            } else {
+                input.classList.remove('show');
+                input.value = '';
+            }
+        }
+
+        function selectFreq(element) {
+            document.querySelectorAll('.freq-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function toggleCheckbox(element) {
+            element.classList.toggle('selected');
+        }
+
+        function selectSatisfaction(btn, value) {
+            const row = btn.closest('tr');
+            row.querySelectorAll('.satisfaction-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function selectRating(btn) {
+            const row = btn.closest('.rating-row');
+            row.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        // ==================== SECTION C - WORK CELLS ====================
+        
+        function selectWorkCell(element) {
+            if (activeWorkCell) {
+                activeWorkCell.classList.remove('active');
+            }
+            activeWorkCell = element;
+            element.classList.add('active');
+        }
+
+        // Special handler for "อื่นๆ" cell
+        function selectOtherCell(element) {
+            selectWorkCell(element);
+            
+            // Enable editing mode
+            element.classList.add('editing');
+            const input = element.querySelector('.other-text-input');
+            input.style.display = 'block';
+            input.focus();
+            
+            // Handle blur to exit editing
+            input.onblur = function() {
+                if (this.value.trim() === '') {
+                    element.classList.remove('editing');
+                    element.querySelector('.work-cell-label').style.display = 'flex';
+                }
+            };
+        }
+
+        function adjustCellValue(cell, amount) {
+            const labelEl = cell.querySelector('.work-cell-label');
+            const inputEl = cell.querySelector('.other-text-input');
+            let itemId;
+            
+            if (inputEl && inputEl.value.trim()) {
+                itemId = 'อื่นๆ: ' + inputEl.value.trim();
+            } else {
+                itemId = labelEl.textContent.trim();
+            }
+            
+            let currentValue = workValues[itemId] || 0;
+            let newValue = currentValue + amount;
+            
+            const currentTotal = calculateTotal();
+            const newTotal = currentTotal - currentValue + newValue;
+            
+            if (newValue < 0) newValue = 0;
+            if (newTotal > 100) {
+                newValue = currentValue + (100 - currentTotal);
+                if (newValue < 0) newValue = 0;
+            }
+            
+            workValues[itemId] = newValue;
+            updateCellDisplay(cell, newValue);
+            updateTotalDisplay();
+        }
+
+        function clearCellValue(cell) {
+            const labelEl = cell.querySelector('.work-cell-label');
+            const inputEl = cell.querySelector('.other-text-input');
+            let itemId;
+            
+            if (inputEl && inputEl.value.trim()) {
+                itemId = 'อื่นๆ: ' + inputEl.value.trim();
+            } else {
+                itemId = labelEl.textContent.trim();
+            }
+            
+            workValues[itemId] = 0;
+            updateCellDisplay(cell, 0);
+            updateTotalDisplay();
+        }
+
+        function updateCellDisplay(cell, value) {
+            cell.querySelector('.work-cell-percent').textContent = value + '%';
+            if (value > 0) {
+                cell.classList.add('has-value');
+            } else {
+                cell.classList.remove('has-value');
+            }
+        }
+
+        // Quick buttons from total bar
+        function quickAdjust(amount) {
+            if (activeWorkCell) {
+                adjustCellValue(activeWorkCell, amount);
+            }
+        }
+
+        function quickClear() {
+            if (activeWorkCell) {
+                clearCellValue(activeWorkCell);
+            }
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            for (let key in workValues) {
+                total += workValues[key];
+            }
+            return total;
+        }
+
+        function updateTotalDisplay() {
+            const total = calculateTotal();
+            const remaining = 100 - total;
+            
+            document.getElementById('totalValue').textContent = total + '%';
+            document.getElementById('remainingValue').textContent = remaining + '%';
+            
+            const totalBar = document.getElementById('totalBar');
+            totalBar.classList.remove('complete', 'over');
+            
+            const remainingEl = document.getElementById('remainingValue');
+            remainingEl.classList.remove('warning');
+            
+            if (total === 100) {
+                totalBar.classList.add('complete');
+            } else if (total > 100) {
+                totalBar.classList.add('over');
+            } else if (remaining <= 20 && remaining > 0) {
+                remainingEl.classList.add('warning');
+            }
+        }
+
+        // Dynamic Inputs
+        function addInput(containerId, maxInputs) {
+            const container = document.getElementById(containerId);
+            const inputs = container.querySelectorAll('.dynamic-input-row');
+            if (inputs.length < maxInputs) {
+                const newRow = document.createElement('div');
+                newRow.className = 'dynamic-input-row';
+                newRow.innerHTML = `
+                    <input type="text" class="dotted-input" placeholder="${inputs.length + 1}. .....................................................">
+                    <button class="remove-btn" onclick="removeInput(this)">×</button>
+                `;
+                container.appendChild(newRow);
+            }
+        }
+
+        function removeInput(btn) {
+            btn.closest('.dynamic-input-row').remove();
+        }
+
+        // Reset Survey
+        function resetSurvey() {
+            currentStep = 1;
+            selectedTeam = null;
+            teamOtherName = '';
+            activeWorkCell = null;
+            workValues = {};
+            
+            document.getElementById('teamSelection').style.display = 'block';
+            document.getElementById('surveyContainer').classList.remove('active');
+            document.getElementById('navButtons').style.display = 'flex';
+            document.querySelectorAll('.team-card').forEach(card => card.classList.remove('selected'));
+            document.querySelectorAll('input').forEach(input => {
+                if (input.type === 'text' || input.type === 'number') input.value = '';
+                if (input.type === 'radio' || input.type === 'checkbox') input.checked = false;
+            });
+            document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+            document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            document.querySelectorAll('.work-cell').forEach(cell => {
+                cell.classList.remove('active', 'has-value', 'editing');
+                cell.querySelector('.work-cell-percent').textContent = '0%';
+            });
+            document.querySelectorAll('.other-tool-input').forEach(input => {
+                input.classList.remove('show');
+                input.value = '';
+            });
+            document.querySelectorAll('.other-text-input').forEach(input => {
+                input.value = '';
+                input.style.display = 'none';
+            });
+            
+            showStep(1);
+            updateProgress();
+            updateTotalDisplay();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        showStep(1);
+
+        // ===== COLLECT FORM DATA =====
+        function collectFormData() {
+            // Section A
+            const name = document.getElementById('name').value.trim();
+            const position = document.getElementById('position').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const teamRadio = document.querySelector('input[name="team"]:checked');
+            const team = teamRadio ? teamRadio.value : selectedTeam;
+            
+            // Get teamOtherName from input if team is other
+            let finalTeamOtherName = '';
+            if (team === 'other') {
+                const nameInput = document.getElementById('teamOtherNameInput');
+                finalTeamOtherName = nameInput ? nameInput.value.trim() : teamOtherName;
+            }
+            
+            // Section B - Level
+            const levelEl = document.querySelector('.level-option.selected');
+            const readinessLevel = levelEl ? parseInt(levelEl.querySelector('.level-badge').textContent.replace('L', '')) : 0;
+            
+            // Section B - Tools
+            const toolsUsed = [];
+            document.querySelectorAll('.tool-option.selected').forEach(el => {
+                const toolName = el.textContent.trim();
+                if (toolName && toolName !== 'อื่นๆ...' && toolName !== 'ไม่เคยใช้เลย') {
+                    toolsUsed.push(toolName);
+                }
+            });
+            // Add other tools
+            ['genai-other', 'm365-other', 'specialized-other'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input && input.value.trim()) {
+                    toolsUsed.push(input.value.trim());
+                }
+            });
+            
+            // Section B - Frequency
+            const freqEl = document.querySelector('.freq-option.selected');
+            let usageFrequency = '';
+            if (freqEl) {
+                const freqText = freqEl.textContent.trim();
+                if (freqText === 'ทุกวัน') usageFrequency = 'daily';
+                else if (freqText.includes('2-3')) usageFrequency = '2-3wk';
+                else if (freqText.includes('สัปดาห์ละครั้ง')) usageFrequency = 'weekly';
+                else if (freqText.includes('เดือน')) usageFrequency = 'monthly';
+                else if (freqText.includes('ไม่เคย')) usageFrequency = 'never';
+            }
+            
+            // Section B - Copilot Satisfaction
+            const copilotSatisfaction = {};
+            document.querySelectorAll('.satisfaction-table tr[data-tool]').forEach(row => {
+                const tool = row.dataset.tool;
+                const selected = row.querySelector('.satisfaction-btn.selected');
+                if (selected) {
+                    const buttons = row.querySelectorAll('.satisfaction-btn');
+                    copilotSatisfaction[tool] = Array.from(buttons).indexOf(selected);
+                } else {
+                    copilotSatisfaction[tool] = 0;
+                }
+            });
+            
+            // Section C - Work Allocation
+            const workAllocation = [];
+            for (const [activity, percent] of Object.entries(workValues)) {
+                if (percent > 0) {
+                    workAllocation.push({ activity, percent });
+                }
+            }
+            
+            // Section D - Problems (ใช้ transformers สำหรับ other team)
+            const problems = [];
+            const problemContainer = (selectedTeam === 'green') ? '#greenProblems' : '#transformersProblems';
+            document.querySelectorAll(problemContainer + ' .option.checkbox.selected').forEach(el => {
+                const title = el.querySelector('.option-title').textContent.trim();
+                if (title !== 'อื่นๆ...') {
+                    problems.push(title);
+                } else {
+                    const otherInput = el.querySelector('.other-input');
+                    if (otherInput && otherInput.value.trim()) {
+                        problems.push(otherInput.value.trim());
+                    }
+                }
+            });
+            
+            // Section D - AI Help Most
+            const aiHelpMost = [];
+            document.querySelectorAll('#aiHelpInputs input').forEach(input => {
+                if (input.value.trim()) {
+                    aiHelpMost.push(input.value.trim());
+                }
+            });
+            
+            // Section D - Interested Features (ใช้ transformers สำหรับ other team)
+            const interestedFeatures = [];
+            const featureContainer = (selectedTeam === 'green') ? '#greenFeatures' : '#transformersFeatures';
+            document.querySelectorAll(featureContainer + ' .option.checkbox.selected').forEach(el => {
+                const title = el.querySelector('.option-title').textContent.trim();
+                if (title !== 'อื่นๆ...') {
+                    interestedFeatures.push(title);
+                } else {
+                    const otherInput = el.querySelector('.other-input');
+                    if (otherInput && otherInput.value.trim()) {
+                        interestedFeatures.push(otherInput.value.trim());
+                    }
+                }
+            });
+            
+            // Section E - Expectations Score
+            const expectationsScore = {
+                reduceRepeat: 0,
+                increaseEfficiency: 0,
+                fasterAccess: 0,
+                betterTeamwork: 0,
+                applyImmediately: 0,
+                learnNewTech: 0,
+                prepareFuture: 0,
+                createInnovation: 0
+            };
+            const expectKeys = Object.keys(expectationsScore);
+            document.querySelectorAll('.rating-grid .rating-row').forEach((row, index) => {
+                if (index < expectKeys.length) {
+                    const selected = row.querySelector('.rating-btn.selected');
+                    if (selected) {
+                        expectationsScore[expectKeys[index]] = parseInt(selected.textContent);
+                    }
+                }
+            });
+            
+            // Section E - Interested Topics
+            const interestedTopics = [];
+            document.querySelectorAll('.step[data-step="5"] .checkbox-grid .option.checkbox.selected').forEach(el => {
+                const title = el.querySelector('.option-title').textContent.trim();
+                if (title !== 'อื่นๆ...') {
+                    interestedTopics.push(title);
+                } else {
+                    const otherInput = el.querySelector('.other-input');
+                    if (otherInput && otherInput.value.trim()) {
+                        interestedTopics.push(otherInput.value.trim());
+                    }
+                }
+            });
+            
+            // Section F
+            const ideas = document.getElementById('aiIdea').value.trim();
+            const speakerNotes = document.getElementById('trainerMessage').value.trim();
+            
+            return {
+                team,
+                teamOtherName: finalTeamOtherName,
+                name,
+                position,
+                department,
+                readinessLevel,
+                toolsUsed,
+                usageFrequency,
+                copilotSatisfaction,
+                workAllocation,
+                problems,
+                aiHelpMost,
+                interestedFeatures,
+                expectationsScore,
+                interestedTopics,
+                ideas,
+                speakerNotes
+            };
+        }
+
+        // ===== SUBMIT TO GOOGLE SHEETS =====
+        async function submitSurvey() {
+            const data = collectFormData();
+            
+            // Validate name
+            if (!data.name) {
+                alert('กรุณากรอกชื่อ-นามสกุล');
+                return;
+            }
+            
+            // Validate team other name
+            if (data.team === 'other' && !data.teamOtherName) {
+                alert('กรุณากรอกชื่อทีม');
+                const nameInput = document.getElementById('teamOtherNameInput');
+                if (nameInput) nameInput.focus();
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('nextBtn').textContent = 'กำลังส่ง...';
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Data sent:', data);
+                
+                // Show success
+                currentStep = totalSteps + 1;
+                showStep(currentStep);
+                updateProgress();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                document.getElementById('nextBtn').disabled = false;
+                document.getElementById('nextBtn').textContent = 'ส่ง ✓';
+            }
+        }
+    </script>
+</body>
+</html>
